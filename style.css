@@ -1,0 +1,29 @@
+*{
+    margin: 0;
+    padding: 0;
+
+    --gu: calc(100vh / 12);
+}
+
+body{
+    background-color: #e9f8e7;
+    color: #071406;
+}
+
+.selectorActive{
+    
+}
+
+.container{
+    width: calc(8 * var(--gu));
+    margin: 0 calc(2 * var(--gu));
+    display: flex;
+}
+
+.selector span{
+    cursor: pointer;
+}
+
+.task{
+    background-color: ;
+}

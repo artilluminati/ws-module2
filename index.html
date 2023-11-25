@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Manager</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Task Manager</h1>
+  </header>
+<div class="container">
+    <div class="selector">
+        <span class="selectorActive">Активные</span>
+        <span>Выполненные</span>
+    </div>
+    <div>
+        <div class="taskFilter">
+            <input type="text" id="filterInput" placeholder="Search tasks...">
+            <input type="date" name="" id="">
+            <input type="time" name="" id="">
+        </div>
+        
+        <section>
+          <div class="taskList">
+            <div class="task">
+                <div>
+                    <input type="text" id="taskTitle" required value="Название задачи">
+                    <span>Через 40 дней</span>
+                    <input type="text" id="dueDate" placeholder="26.10.2023">
+                    <input type="text" id="dueTime" placeholder="10:00">
+                </div>
+                <div>
+                    <div>
+                        <input type="checkbox" name="" id="">
+                        <span>Название подзадачи</span>
+                    </div>
+                    <div class="delete-subtask">
+                        x
+                    </div>
+                </div>
+                <div class="addTask">
+                    +
+                </div>
+            </div>
+          <div>
+        </section>
+    
+        <h2>Добавить задачу</h2>
+        <div class="task">
+            <div>
+                <input type="text" id="taskTitle" required value="Название задачи">
+                <input type="text" id="dueDate" placeholder="DD.MM.YYYY">
+                <input type="text" id="dueTime" placeholder="HH:MM">
+            </div>
+        </div>
+    </div>
+</div>
+  
+  <script src="app.js"></script>
+</body>
+</html>
