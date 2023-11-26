@@ -10,6 +10,19 @@
   <header>
     <h1>Task Manager</h1>
   </header>
+
+  <div class="modalBackground">
+    <div class="modalActive">
+        <div class="modalClose">
+            &#x2716;
+        </div>
+        <div class="modalWindow">
+            <p id="modalMessage">
+            </p>
+        </div>
+    </div>
+  </div>
+
 <div class="container">
   <div class="selector">
       <div class="selectorActive">Активные</div>
@@ -52,9 +65,10 @@
       <h2>Добавить задачу</h2>
         <div class="task">
             <div>
-                <input type="text" id="taskTitle" required value="Название задачи">
-                <input type="text" id="dueDate" placeholder="DD.MM.YYYY">
-                <input type="text" id="dueTime" placeholder="HH:MM">
+                <input type="text" id="newTaskTitle" required value="Название задачи">
+                <input type="date" id="newDueDate" placeholder="DD.MM.YYYY">
+                <input type="time" id="newDueTime" placeholder="HH:MM">
+                <input type="submit" value="Создать" style="cursor: pointer;" onclick="addTask()">
             </div>
         </div>
   </div>

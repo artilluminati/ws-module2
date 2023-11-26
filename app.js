@@ -1,37 +1,31 @@
 var clearData = [
     {
-        "id": 0,
         "completed": false, 
         "title": "Название задачи",
         "dueDate": "26.10.2023",
         "dueTime": "10:00",
         "subTasks": [
         {
-            "id": 0,
             "title": "Название подзадачи",
             "completed": false
         },
         {
-            "id": 1,
             "title": "Название 2 подзадачи",
             "completed": false
         }
         ]
     },
     {
-        "id": 1,
         "completed": false, 
         "title": "Название 2 задачи",
         "dueDate": "27.10.2023",
         "dueTime": "23:59",
         "subTasks": [
         {
-            "id": 0,
             "title": "Название подзадачи",
             "completed": true
         },
         {
-            "id": 1,
             "title": "Название 2 подзадачи",
             "completed": false
         }
@@ -39,10 +33,47 @@ var clearData = [
     }
 ];
 
+
+    const modalTrigger = document.getElementsByClassName("trigger")[0];
+
+    const windowInnerWidth = document.documentElement.clientWidth;
+    const scrollbarWidth = parseInt(window.innerWidth) - parseInt(windowInnerWidth);
+
+    const bodyElementHTML = document.getElementsByTagName("body")[0];
+    const modalBackground = document.getElementsByClassName("modalBackground")[0];
+    const modalClose = document.getElementsByClassName("modalClose")[0];
+    const modalActive = document.getElementsByClassName("modalActive")[0];
+
+
+
+    modalClose.addEventListener("click", function () {
+        modalBackground.style.display = "none";
+    });
+
+    modalBackground.addEventListener("click", function (event) {
+        if (event.target === modalBackground) {
+            modalBackground.style.display = "none";
+        }
+    });
+
+
+function showModal(message){
+    document.getElementById('modalMessage').innerText(message);
+    modalBackground.style.display = "flex";
+}
+
+
+
 function getData(){
     try {
         console.log('json');
-        return JSON.parse(localStorage.getItem("localData"));
+        
+        if (JSON.parse(localStorage.getItem("localData")) != null){
+            return JSON.parse(localStorage.getItem("localData"));
+        } else{
+            return clearData;
+        }
+        
     } catch{
         console.log('clear');
         return clearData;
@@ -51,17 +82,42 @@ function getData(){
 
 data = getData();
 
-// if (Object.keys(getData()).length === 0) {
-//     var data = clearData;
-//   } else {
-//     var data = getData();
-// }
+console.log(data);
+
+function resetData(){
+    localStorage.setItem("localData",clearData)
+}
+
 
 function getNum(strNum){
     return strNum.replace(/^\D+/g, '');
 };
 
+function getCurDateStr(){
+    const date = new Date();
+
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+
+    return `${day}.${month}.${year}`;
+}
+
+function getCurTimeString(){
+    const date = new Date();
+
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+
+    return `${hours}:${minutes}`;
+}
+
+// Отображение задач
 function buildTasks(){
+    data = data.filter(function(e) {
+        return e !== null && e !== undefined;
+      });
+
     localStorage.setItem("localData",JSON.stringify(data));
 
     const taskListContainer = document.querySelector('.taskList');
@@ -83,7 +139,6 @@ function addSubTask(elem){
     console.log(id);
     
     const newSubTask = {
-        "id": "task.subTasks.length",
         "title": 'Введите название',
         "completed": false
     };
@@ -96,31 +151,61 @@ function addSubTask(elem){
 
 // Удаление подзадачи
 function delSubTask(elem){
-    let id = getNum(elem.attributes.taskid);
+    let id = parseInt(elem.attributes.taskid.value);
     console.log(id);
 
     subId = getNum(elem.id);
     
-    data[subId].subTasks.slice(newSubTask);
+    delete data[id].subTasks[subId];
 
     buildTasks();
 
-    console.log(getData())
+    console.log(getData());
 };
 
 // Добавление задачи
 function addTask(){
-    let id = getNum(elem.id);
-    console.log(id);
+
+    taskTitle = document.getElementById('newTaskTitle').value;
+    taskDueDate = document.getElementById('newDueDate').value;
+    taskDueTime = document.getElementById('newDueTime').value;
+
+    [taskTitle, taskDueDate, taskDueTime].forEach(element => {
+        if(!element || element.length === 0 ){
+            return false;
+        }
+    });
+
+    console.log(taskTitle);
+    console.log(taskDueDate);
+    console.log(taskDueTime);
     
-    const newSubTask = {
-        "id": "task.subTasks.length",
-        "title": 'Введите название',
-        "completed": false
+    const newTask = {
+        "completed": false, 
+        "title": taskTitle,
+        "dueDate": taskDueDate,
+        "dueTime": taskDueTime,
+        "subTasks": [
+        {
+            "title": "Введите название подзадачи",
+            "completed": false
+        }
+        ]
     };
-    data[id].subTasks.push(newSubTask);
+    data.push(newTask);
 
     buildTasks();
+};
+
+function delTask(id){
+    console.log(id);
+    
+    delete data[id];
+
+
+    buildTasks();
+
+    console.log(getData());
 };
 
 function getTimeLeft(timeStr){
@@ -148,19 +233,21 @@ function createTaskHTML(task, taskId) {
     infoDiv1.appendChild(dueDateSpan);
   
     const infoDiv2 = document.createElement('div');
-    const plusIcon = document.createElement('img');
-    plusIcon.setAttribute('src', 'img/plus-svgrepo-com.svg');
-    plusIcon.classList.add('img-icon', 'cross');
-    infoDiv2.appendChild(plusIcon);
+    const delIcon = document.createElement('img');
+    delIcon.setAttribute('src', 'img/plus-svgrepo-com.svg');
+    delIcon.classList.add('img-icon', 'cross');
+    strModal = '\u0412\u044B\u0020\u0443\u0432\u0435\u0440\u0435\u043D\u044B\u003F\u003C\u0061\u0020\u006F\u006E\u0063\u006C\u0069\u0063\u006B\u003D\u0027\u0064\u0065\u006C\u0054\u0061\u0073\u006B\u0028\u0029\u0027\u003E\u0423\u0434\u0430\u043B\u0438\u0442\u044C\u003C\u002F\u0061\u003E';
+    delIcon.setAttribute('onclick', 'delTask('+taskId+')');
+    infoDiv2.appendChild(delIcon);
     
     const dueDateInput = document.createElement('input');
-    dueDateInput.setAttribute('type', 'text');
-    dueDateInput.setAttribute('placeholder', task.dueDate);
+    dueDateInput.setAttribute('type', 'date');
+    dueDateInput.setAttribute('value', task.dueDate);
     infoDiv2.appendChild(dueDateInput);
   
     const dueTimeInput = document.createElement('input');
-    dueTimeInput.setAttribute('type', 'text');
-    dueTimeInput.setAttribute('placeholder', task.dueTime);
+    dueTimeInput.setAttribute('type', 'time');
+    dueTimeInput.setAttribute('value', task.dueTime);
     infoDiv2.appendChild(dueTimeInput);
   
     taskInfo.appendChild(infoDiv1);
@@ -183,14 +270,17 @@ function createTaskHTML(task, taskId) {
 
         const subTaskSpan = document.createElement('input');
         subTaskSpan.value = subTask.title;
+        subTaskSpan.setAttribute('type', 'text');
 
         const deleteSubtaskDiv = document.createElement('div');
         const deleteSubtaskIcon = document.createElement('img');
         deleteSubtaskIcon.setAttribute('src', 'img/plus-svgrepo-com.svg');
-        dueTimeInput.setAttribute('taskid', taskId);
         deleteSubtaskIcon.classList.add('img-icon', 'cross');
         deleteSubtaskDiv.classList.add('delete-subtask');
+        deleteSubtaskDiv.setAttribute('taskid', taskId);
         deleteSubtaskDiv.setAttribute('id', 'sub'+subTaskId);
+        
+        deleteSubtaskDiv.setAttribute('onclick', "delSubTask(this)");
         deleteSubtaskDiv.appendChild(deleteSubtaskIcon);
 
         subTaskDiv.appendChild(subTaskCheckbox);
@@ -222,5 +312,12 @@ function createTaskHTML(task, taskId) {
 
   
   buildTasks(data);
+
+
+  document.addEventListener('input', function(event) {
+    const input = event.target;
+    console.log('Value: ' + input.value);
+
+  });
 
 

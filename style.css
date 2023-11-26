@@ -25,7 +25,7 @@ body{
     background-color: var(--secondary-col);
     max-width: 100%;
     cursor: pointer;
-    padding: 5px;
+    padding: 15px;
     border-radius: 8px;
     margin-bottom: 10px;
 }
@@ -106,9 +106,10 @@ input{
     justify-content: space-between;
     align-items: center;
 }
-.task-sub > input{
+.task-sub > input[type="text"]{
     background: none;
     color: var(--text-col);
+    width: 90%;
 }
 
 .img-icon{
@@ -116,6 +117,7 @@ input{
 }
 .cross{
     transform: rotate(45deg);
+    cursor: pointer;
 }
 
 .task > div{
@@ -127,10 +129,10 @@ input{
     justify-content: space-between;
 }
 .task-info > div {
-    width: calc();
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+    width: calc(50% - 15px);
 }
 .task-info > div > *{
     margin: 10px 0;
@@ -138,8 +140,12 @@ input{
 .task-info > div:first-child{
     align-items: flex-start;
 }
+.task-info > div > input[type="text"]{
+    width: 100%;
+    background: var(--bg-col);
+}
 
-.task[inputtype="text"]{
+.task[type="text"]{
     width: 70%;
 }
 
@@ -170,4 +176,66 @@ h2{
     align-items: center;
     background-color: var(--accent-col);
     height: 60px;
+}
+
+
+
+/* МОДАЛЬНОЕ ОКНО */
+body {
+    overflow-x: hidden;
+}
+
+/* фон нашего модального окна */
+.modalBackground {
+    display: none;
+    background: rgba(0, 0, 0, 0.8);
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    justify-content: center;
+    top: 0px;
+    /* указываем z-индекс для корректного наслаивания */
+    z-index: 1;
+}
+
+/* позиционирование самого модального окна */
+.modalActive {
+    position: absolute;
+    width: 350px;
+    height: 495px;
+    top: calc(50% - 250px);
+    /* left: calc(50% - 175px); */
+    border-radius: 10px;
+    background-color: rgb(255, 255, 255);
+    cursor: default;
+    padding: 40px 20px;
+}
+
+/* кнопочка закрытия модального окна */
+.modalClose {
+    font-family: var(--font-regular);
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+/* сама картинка кнопочки закрытия */
+.modalClose img {
+    margin: 3px;
+    width: 24px;
+    height: 24px;
+}
+
+/* делаем позиционирование внутренних элементов относительно модального окна */
+.modalWindow {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 50%;
+    align-content: center;
+    justify-content: space-between;
 }
