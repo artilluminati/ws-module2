@@ -42,22 +42,132 @@ input{
 
 .container{
     width: calc(10 * var(--gu));
-    margin: 0 calc(2 * var(--gu));
+    padding: 0 calc(2 * var(--gu));
     display: flex;
+    margin-right: 0;
 }
 
 .tasks-container{
     display: flex;
     flex-direction: column;
+    width: calc(8 * var(--gu));
 }
 .tasks-container > div{
     margin-bottom: 60px;
-    width: 100%;
     display: flex;
+}
+
+.taskFilter{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.task{
+    display: flex;
+    flex-direction: column;
+    background-color: var(--primary-col);
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 30px;
+}
+
+.sub-tasks{
+    display: flex;
+    flex-direction: column;
+}
+.sub-tasks > div{
+    margin-bottom: 20px;
+}
+.sub-tasks > div:last-child{
+    margin-bottom: 5px;
+}
+
+.taskList{
+    display: flex;
+    flex-direction: column;
+}
+
+.task > *{
+    margin-top: 10px;
+}
+.task > *:first-child{
+    margin-top: 0;
 }
 
 
 
-/* .task{
-    background-color: ;
-} */
+.task-sub{
+    background: var(--secondary-col);
+    padding: 10px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.task-sub > input{
+    background: none;
+    color: var(--text-col);
+}
+
+.img-icon{
+    width: 25px;
+}
+.cross{
+    transform: rotate(45deg);
+}
+
+.task > div{
+    display: flex;
+    justify-content: space-between;
+}
+.task-info{
+    display: flex;
+    justify-content: space-between;
+}
+.task-info > div {
+    width: calc();
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+.task-info > div > *{
+    margin: 10px 0;
+}
+.task-info > div:first-child{
+    align-items: flex-start;
+}
+
+.task[inputtype="text"]{
+    width: 70%;
+}
+
+.task[inputtype="checkbox"]{
+    margin-right: 10px;
+}
+
+.delete-subtask {
+    cursor: pointer;
+}
+
+.addTask {
+    cursor: pointer;
+    font-size: 24px;
+    align-self: center;
+    border-radius: 50%;
+    height: 25px;
+    width: 25px;
+    background: var(--secondary-col);
+    padding: 3px;
+}
+h2{
+    margin-bottom: 10px;
+}
+.header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--accent-col);
+    height: 60px;
+}
