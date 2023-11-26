@@ -62,7 +62,31 @@ function showModal(message){
     modalBackground.style.display = "flex";
 }
 
+function checkboxInput(elem){
+    try{
+        sid = elem.attributes.sid.value;
+    } catch{
+        sid = '';
+    }
 
+    
+    tid = elem.attributes.tid.value;
+
+    if (elem.checked){
+        value = true;
+    }
+    else{
+        value = false;
+    }
+
+    if (sid != ''){
+        data[tid].subTasks[sid]['completed'] = value;
+    }
+    else{
+        data[tid]['completed'] = value;
+    }
+    buildTasks();
+  }
 
 function getData(){
     try {
@@ -225,29 +249,43 @@ function createTaskHTML(task, taskId) {
     const taskTitle = document.createElement('input');
     taskTitle.setAttribute('type', 'text');
     taskTitle.setAttribute('required', 'true');
+    taskTitle.classList.add('title');
+    taskTitle.setAttribute('tid', taskId);
     taskTitle.value = task.title;
     infoDiv1.appendChild(taskTitle);
     
     const dueDateSpan = document.createElement('span');
     dueDateSpan.textContent = getTimeLeft(task.dueDate);
+    dueDateSpan.classList.add('dueDateSpan');
     infoDiv1.appendChild(dueDateSpan);
+
+    const checkInput = document.createElement('input');
+    checkInput.setAttribute('type', 'checkbox');
+    checkInput.setAttribute('tid', taskId);
+    checkInput.setAttribute('onclick', 'checkboxInput(this)');
+    checkInput.classList.add('completed');
+    infoDiv1.appendChild(checkInput);
+    
   
     const infoDiv2 = document.createElement('div');
     const delIcon = document.createElement('img');
     delIcon.setAttribute('src', 'img/plus-svgrepo-com.svg');
     delIcon.classList.add('img-icon', 'cross');
-    strModal = '\u0412\u044B\u0020\u0443\u0432\u0435\u0440\u0435\u043D\u044B\u003F\u003C\u0061\u0020\u006F\u006E\u0063\u006C\u0069\u0063\u006B\u003D\u0027\u0064\u0065\u006C\u0054\u0061\u0073\u006B\u0028\u0029\u0027\u003E\u0423\u0434\u0430\u043B\u0438\u0442\u044C\u003C\u002F\u0061\u003E';
     delIcon.setAttribute('onclick', 'delTask('+taskId+')');
     infoDiv2.appendChild(delIcon);
     
     const dueDateInput = document.createElement('input');
     dueDateInput.setAttribute('type', 'date');
     dueDateInput.setAttribute('value', task.dueDate);
+    dueDateInput.setAttribute('tid', taskId);
+    dueDateInput.classList.add('dueDate');
     infoDiv2.appendChild(dueDateInput);
   
     const dueTimeInput = document.createElement('input');
     dueTimeInput.setAttribute('type', 'time');
+    dueTimeInput.setAttribute('tid', taskId);
     dueTimeInput.setAttribute('value', task.dueTime);
+    dueTimeInput.classList.add('dueTime');
     infoDiv2.appendChild(dueTimeInput);
   
     taskInfo.appendChild(infoDiv1);
@@ -267,10 +305,17 @@ function createTaskHTML(task, taskId) {
 
         const subTaskCheckbox = document.createElement('input');
         subTaskCheckbox.setAttribute('type', 'checkbox');
+        subTaskCheckbox.setAttribute('tid', taskId);
+        subTaskCheckbox.setAttribute('sid', subTaskId);
+        subTaskCheckbox.setAttribute('onclick', 'checkboxInput(this)');
+        subTaskCheckbox.classList.add('completed');
 
         const subTaskSpan = document.createElement('input');
         subTaskSpan.value = subTask.title;
         subTaskSpan.setAttribute('type', 'text');
+        subTaskSpan.setAttribute('tid', taskId);
+        subTaskSpan.setAttribute('sid', subTaskId);
+        subTaskSpan.classList.add('title');
 
         const deleteSubtaskDiv = document.createElement('div');
         const deleteSubtaskIcon = document.createElement('img');
@@ -314,10 +359,68 @@ function createTaskHTML(task, taskId) {
   buildTasks(data);
 
 
-  document.addEventListener('input', function(event) {
-    const input = event.target;
-    console.log('Value: ' + input.value);
+ 
 
+  document.addEventListener('keyup', function(event) {
+    if (event.target.tagName == ('INPUT')) {
+    const input = event.target;
+    objName = input.classList[0];
+    try{
+        sid = input.attributes.sid.value;
+    } catch{
+        sid = '';
+    }
+
+    value = input.value;
+    
+    tid = input.attributes.tid.value;
+    console.log(objName);
+    console.log('Value: ' + input.value);
+    if (value != ''){
+        if (sid != ''){
+            data[tid].subTasks[sid][objName] = value;
+        }
+        else{
+            data[tid][objName] = value;
+        }
+        buildTasks();
+    }}
   });
+
+
+//   input.addEventListener('input', function(event) {
+    
+//     const input = event.target;
+//     objName = input.classList[0];
+//     if (input.type == 'checkbox') {
+//         if (input.value == 'on'){
+//             value = true;
+//         }
+//         else{
+//             value = false;
+//         }
+//     } else {
+//         return 0;
+//     };
+
+
+//     try{
+//         sid = input.attributes.sid.value;
+//     } catch{
+//         sid = '';
+//     }
+    
+//     tid = input.attributes.tid.value;
+//     console.log(objName);
+//     console.log('Value: ' + input.value);
+//     if (sid != ''){
+//         data[tid].subTasks[sid][objName] = value;
+//     }
+//     else{
+//         data[tid][objName] = value;
+//     }
+//     buildTasks();
+// });
+  
 
 
